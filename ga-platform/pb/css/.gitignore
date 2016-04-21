@@ -1,0 +1,5 @@
+*
+!.gitignore
+!bootstrap.min.css
+!ie10-viewport-bug-workaround.css
+!font-awesome.min.css

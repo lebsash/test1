@@ -1,0 +1,125 @@
+
+.simple-form {    
+    margin: 50px auto;
+}
+
+.form-signin {
+    max-width: 380px;
+    padding: 15px 35px 45px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,0.1);  
+    .form-signin-heading, .checkbox {
+        margin-bottom: 30px;
+    }
+    .checkbox {
+        font-weight: normal;
+    }
+    .form-control {
+        position: relative;
+        font-size: 16px;
+        height: auto;
+        padding: 10px;
+    }
+    input[type="text"] {
+        margin-bottom: -1px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    input[type="password"] {
+        margin-bottom: 20px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+}
+/* Base structure - start */
+html, body {
+    height: 100%;
+}
+
+#page-container {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -120px;
+    padding: 80px 0 130px 0;
+}
+#page-container > .container {
+    padding: 120px 15px 0;
+}
+.container .credit {
+    margin: 20px 0;
+}
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+footer#footer {
+    height: 120px;
+    background-color: #222222;
+    color: #7a7a7a;
+    a, a:hover{
+        color: #7a7a7a;
+    }
+    .footer-nav {
+        list-style: none;
+        display: inline;
+    }
+    .footer-nav li{
+        list-style: none;
+        display: inline;
+    }
+}
+footer#footer > .container {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+/* Base structure - end */
+
+/* Customs - start */
+.navbar-brand, .navbar-nav li a {
+    line-height: 70px;
+    height: 70px;
+    padding-top: 0;
+    color: #b7b7b7;
+    text-transform: uppercase;
+}
+.navbar-nav{
+    font-size: 0.85em;
+    li {
+        text-align:center;
+        color:#FFF !important;
+    }
+    a:hover {
+        color: #222222 !important;
+        border-bottom: 2px solid #2c5fac;
+    }
+    li.highlight {
+        a {
+            color: #FFF !important;
+            border-bottom: 2px solid #2c5fac;
+        }
+        color: #FFF !important;
+        background: #2c5fac;
+    }
+}
+.navbar {
+    background: #fff;
+    border:0;
+}
+.navbar-header {
+    .navbar-brand:hover {
+        background: #fff;
+    }
+    .navbar-brand {
+        background: #fff;
+        img {
+            width:120px;
+            margin-top:5px;
+        }
+    }
+}
+.navbar-toggle.collapsed{
+    background: #444 !important;
+}
+/* Customs - end */
