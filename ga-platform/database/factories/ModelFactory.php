@@ -30,3 +30,16 @@ $factory->define(GAPlatform\Models\GASalesPerson::class, function (Faker\Generat
         'Office' => 'Email subject',
     ];
 });
+
+
+// GAOffices
+$factory->define(GAPlatform\Models\GAOffices::class, function (Faker\Generator $faker) {
+    return [
+        'UID' => rand(1,8000),
+        'Email' => $faker->email,
+        'Name' => $faker->name,
+        'Logo_URL' => $faker->url,
+        'DomainName' => $faker->url,
+        'isActive' => 1,
+    ];
+}); 

@@ -70,12 +70,17 @@ class AgentsController extends Controller
 
     public function workwithoffice ($data)
     {
+
        foreach ($data  as $value) {
+                        $Out[$value['SalesPersonID']] =  array( 'Total_SUMM'    => 0, 
+                                                                'subscription'  => 0, 
+                                                                'ErrorCharges'  => 0);
                $oOffices    = new GAOffices();
                if ($Offices = $oOffices->where('UID',  $value['Office'])->first()) {
                   $data1['List'] = $Offices->getAllAgents($Offices->UID);
                   $TotalSumm = 0;
                   $subscription = array ();
+
                   foreach ($data1['List'] as $Pers) 
                         {
                             if ((isset($Pers->StripeCustomerID))and(strlen($Pers->StripeCustomerID)>0)) 

@@ -67,12 +67,5 @@ class HomeControllerTest extends TestCase
      *
      * @return void
      */
-    public function testMainLoginPageWithSignature()
-    {
-        $this->post('login', ['email'=>'Katie.hirsch@greatagentusa.com',
-                              'password'=>'greatagent',
-                              'termsOfService'=>'terms'
-                             ])
-             ->assertRedirectedTo('/ga/user-agreement/signature');
-    }
+
 }
