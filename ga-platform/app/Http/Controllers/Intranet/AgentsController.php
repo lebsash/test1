@@ -53,7 +53,7 @@ class AgentsController extends Controller
 
     public function charges_get ($StripeCustomerID, $period = null)
     {
-         if ((isset($StripeCustomerID))and(strlen($StripeCustomerID)>0)) 
+         if ((isset($StripeCustomerID))and(strlen($StripeCustomerID)>1)) 
          {
             $first_day_of_month  = strtotime(date('Y-m-01 00:00:00'));
             $stripe              = Stripe::make(env('STRIPE_API_SECRET'));

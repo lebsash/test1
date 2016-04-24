@@ -86,8 +86,18 @@ class UserTest extends TestCase
         $response1 = $this->action('GET', 'Intranet\AgentsController@charges_get', 'cus_8IryVpEwMklKf6');
         			 $this->assertResponseOk();
         			 $this->assertTrue($response1->getContent());
+        $response1 = $this->action('GET', 'Intranet\AgentsController@charges_get', '1');
+        			 $this->assertResponseOk();
+        			 $this->assertEquals(null, $response1); 
+
+		$response1 = $this->action('GET', 'Intranet\AgentsController@charges_calc');
+					 $this->assertResponseOk();
+					 $this->assertEquals(null, $response1); 
 
 		$response1 = $this->action('GET', 'Intranet\AgentsController@charges_calc',$response1);
+					 $this->assertResponseOk();
+					 $this->assertTrue($response1->getContent());
+		$response1 = $this->action('GET', 'Intranet\AgentsController@formAgent');
 					 $this->assertResponseOk();
 					 $this->assertTrue($response1->getContent());
 
@@ -149,13 +159,30 @@ class UserTest extends TestCase
 
 
 
+	public function testNewAgentsWithError()
+    {
+		
+    	$this->visit('/intranet/agents/form')
+			 ->press('Submit')
+			 ->seePageIs('/intranet/agents/form//')
+			 ->see('Name is required');
+		$this->assertResponseOk();
+    }
+
+	public function testNewOfficeWithError()
+    {
+		
+    	$this->visit('/intranet/offices/form')
+			 ->press('Submit')
+			 ->seePageIs('/intranet/offices/form//')
+			 ->see('Name is required');
+		$this->assertResponseOk();
+    }
+
 
 	/**
 	* @dataProvider providerTestNewAgents
  	*/
-
-
-
     public function testNewAgents($variableOne, $variableTwo, $varUser)
     {
 		
