@@ -50,7 +50,7 @@
                     <td class="force-center">{{ date("M/d/Y g:iA", strtotime($item->created_at)) }}</td>
                     <td class="force-center">
                     
-                        <a href="{{ config('app.url-gai') }}/offices/main/{{ $item->id }}/" class="fa fa-info-circle" title="Info"></a>
+                        <a href="{{ config('app.url-gai') }}/offices/main/{{ $item->id }}/" class="fa fa-info-circle" id="info" title="Info"></a>
                         <a href="{{ config('app.url-gai') }}/offices/form/{{ $item->id }}/" class="fa fa-pencil-square" title="Edit Office"></a>
                         <a href="{{ config('app.url-gai') }}/offices/delete/{{ $item->id }}/" class="fa fa-times-circle" title="Delete Office"></a>
                     </td>

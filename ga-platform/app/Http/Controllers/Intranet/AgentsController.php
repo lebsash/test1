@@ -70,7 +70,7 @@ class AgentsController extends Controller
 
     public function workwithoffice ($data)
     {
-
+       $Out = "";
        foreach ($data  as $value) {
                         $Out[$value['SalesPersonID']] =  array( 'Total_SUMM'    => 0, 
                                                                 'subscription'  => 0, 

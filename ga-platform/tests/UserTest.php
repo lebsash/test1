@@ -48,15 +48,80 @@ class UserTest extends TestCase
      * My test implementation
      */
 
-	/**
- 	* @dataProvider providerTestFoo
- 	*/
-	public function testFoo($variableOne, $variableTwo)
+
+	public function testFoo()
 	{
         $this 	-> 	visit('/intranet/dashboard')
              	->	click('All Users')
              	->	seePageIs('/intranet/users');
+
+ 		$this 	-> 	visit('/intranet/offices')
+             	->	see('Office');
+
+
+ 		$this 	-> 	visit('/intranet/offices')
+ 				->  click('#info')
+             	->	see('Offices - main information');
+             	
+         $this 	-> 	visit('/intranet/agents')
+ 				->  type('8', 'search')
+ 				->  press('Search')
+ 				->  seePageIs('/intranet/agents//')
+             	->	see('Lisa Edwards');     	
+
 	}
+
+
+ public function AnyNewTest () {
+        $this->action('GET', 'Intranet\OfficesController@infoOffices');
+        $this->assertResponseOk();
+
+        $this->action('GET', 'Intranet\UsersController@formUser');
+        $this->assertResponseOk();
+        $this->assertViewHas('user');
+
+        $this->action('GET', 'Intranet\AgentsController@charges_get', 'cus_8IryVpEwMklKf6');
+        $this->assertResponseOk();
+
+        $response1 = $this->action('GET', 'Intranet\AgentsController@charges_get', 'cus_8IryVpEwMklKf6');
+        			 $this->assertResponseOk();
+        			 $this->assertTrue($response1->getContent());
+
+		$response1 = $this->action('GET', 'Intranet\AgentsController@charges_calc',$response1);
+					 $this->assertResponseOk();
+					 $this->assertTrue($response1->getContent());
+
+		$response1 = $this->action('GET', 'Intranet\OfficesController@subscriptions_get','cus_8JPC65OiwtqxwS');
+					 $this->assertResponseOk();
+					 $this->assertEquals(1, count($response1)); 
+					 $this->assertTrue($response1->getContent());
+
+    }
+
+
+
+ /* Testing VIEWS */
+ 	public function testSimpleView() {        	
+    	$res = $this->call('GET', '/intranet/agents');
+	    $this->assertResponseOk();
+	    $this->assertViewHas('items');
+	    $items = $res->original['items'];
+	    $this->assertEquals(1, count($items));  
+		
+		$res = $this->call('GET', '/intranet/offices');
+	    $this->assertResponseOk();
+	    $this->assertViewHas('items');
+
+		$res = $this->call('GET', '/intranet/users');
+	    $this->assertResponseOk();
+	    $this->assertViewHas('items');
+	   	$items = $res->original['items'];
+	    $this->assertEquals(10, count($items)); 
+
+	    $response = $this->get('/intranet/dashboard');
+        $this->assertResponseOk();
+	}
+
 
 	/**
  	* @dataProvider providerTestNewUsers
@@ -88,13 +153,17 @@ class UserTest extends TestCase
 	/**
 	* @dataProvider providerTestNewAgents
  	*/
+
+
+
     public function testNewAgents($variableOne, $variableTwo, $varUser)
     {
+		
 		$Query = DB::table('GA_User')
 					->where('UserID',$varUser)
 					->where('Status','active')
 					->first();
-
+		if ($Query->UserID != 8) {
         $Us = $Query->UserID.' - '.$Query->Name;
 
     	$this->visit('/intranet/agents/form')
@@ -107,7 +176,32 @@ class UserTest extends TestCase
 			 ->press('Submit');
 
 		$this->SeeInDatabase('GA_SalesPerson', ['Office' => $variableOne, 'StripeCustomerID' => $variableTwo]);
+		}
+    }
 
+
+	/**
+	* @dataProvider providerTestNewAgents
+ 	*/
+    public function testEditAgents($variableOne, $variableTwo, $varUser)
+    {
+		$Query = DB::table('GA_SalesPerson')
+					->where('UserID',$varUser)
+					->first();
+
+        // $Us = $Query->UserID.' - '.$Query->Name;
+  
+        
+    	$this->visit('/intranet/agents/form/'.$Query->SalesPersonID.'/')
+    		 ->type($this->faker->name, 'Name')
+    		 ->type($this->faker->email, 'Email')
+			 ->type($variableOne, 'Office')
+			 ->type('Title Field', 'Title')
+			 ->type($variableTwo,'StripeCustomerID')
+			 ->press('Submit');
+
+		$this->SeeInDatabase('GA_SalesPerson', ['Office' => $variableOne, 'StripeCustomerID' => $variableTwo]);
+	
     }
 
 
@@ -178,7 +272,7 @@ class UserTest extends TestCase
  	*/
     public function testDelAgents($variableOne, $variableTwo, $varUser)
     { 
-    	DB::table('GA_SalesPerson')->where('UserID', $varUser)->delete();
+    	if ($varUser!=8) { DB::table('GA_SalesPerson')->where('UserID', $varUser)->delete(); }
     }
 
 	/**
@@ -212,7 +306,7 @@ class UserTest extends TestCase
 	public function providerTestNewAgents ()
 	{
     	return array(
-    			array ('333-444-333', 'cus_8JPC65OiwtqxwS', '8'), 
+    			array ('512-619-6498', 'cus_8JPC65OiwtqxwS', '8'), 
     			array ('222-333-222', 'cus_8IryVpEwMklKf6', '113545'),
     			array ('555-666-888','', '113546'),
     			array ('888-333-454','','113547'),
