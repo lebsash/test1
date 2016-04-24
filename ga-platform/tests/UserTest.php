@@ -1,10 +1,8 @@
 <?php
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransaction;
+
 class UserTest extends TestCase
 {
- /**
+     /**
      * @var FakerGenerator
      */
 
@@ -17,30 +15,25 @@ class UserTest extends TestCase
      */
 
 
-
     public function createApplication()
     {
         $app = require __DIR__.'/../bootstrap/app.php';
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
         return $app;
     }
+
     /**
     * Model Classes
     */
-    protected $GAOffices = null;
-    
-
+    protected $GAOffices = null;   
     public function setUp()
     {
         parent::setUp();
         $this->baseUrl = 'http://'.env('APP_HOST');
         $this->faker = Faker\Factory::create();
-        $this->GAOffices = factory(GAPlatform\Models\GAOffices::class, 3)->make();
-        $this->GAUser = factory(GAPlatform\Models\GAUser::class)->make();
-        $this->GASalesPerson = factory(GAPlatform\Models\GASalesPerson::class)->make();
-
+    
         Session::start();
-
+	
 		$this->visit('intranet/login')
              ->type('greatgnt', '#username')
              ->type('greater4gent!','#password')
@@ -55,24 +48,19 @@ class UserTest extends TestCase
      * My test implementation
      */
 
-/**
- * @dataProvider providerTestFoo
- */
-public function testFoo($variableOne, $variableTwo)
-{
+	/**
+ 	* @dataProvider providerTestFoo
+ 	*/
+	public function testFoo($variableOne, $variableTwo)
+	{
         $this 	-> 	visit('/intranet/dashboard')
              	->	click('All Users')
              	->	seePageIs('/intranet/users');
-}
+	}
 
-
-
-
-
-
-/**
- * @dataProvider providerTestNewUsers
- */
+	/**
+ 	* @dataProvider providerTestNewUsers
+ 	*/
     public function testNewUsers($variableOne)
     {
     	$this->visit('/intranet/users/form')
@@ -97,9 +85,9 @@ public function testFoo($variableOne, $variableTwo)
 
 
 
-/**
- * @dataProvider providerTestNewAgents
- */
+	/**
+	* @dataProvider providerTestNewAgents
+ 	*/
     public function testNewAgents($variableOne, $variableTwo, $varUser)
     {
 		$Query = DB::table('GA_User')
@@ -124,9 +112,9 @@ public function testFoo($variableOne, $variableTwo)
 
 
 
-/**
- * @dataProvider providerTestNewOffice
- */
+	/**
+ 	* @dataProvider providerTestNewOffice
+ 	*/
     public function testNewOffice($variableOne)
     {
 
@@ -145,35 +133,33 @@ public function testFoo($variableOne, $variableTwo)
             ->press('Submit')
             ->seePageIs('/intranet/offices/form//');
 
-			$this->SeeInDatabase('GAOffices', ['UID' => $variableOne]);
-
-			
+			$this->SeeInDatabase('GAOffices', ['UID' => $variableOne]);			
     }
 
   
 
 
 
-public function TestAllOffice()
-{
-	$Query = DB::table('GAOffices')->get();
-	foreach ($Query as $value) {
-	    $Agents = DB::table('GA_SalesPerson')->where('Office', $value->UID)->get();
-	    foreach ($Agents as $ag) {
-	    	 $User = DB::table('GA_User')->where('UserID', $ag->$UserID);
-	    	 $this->visit('/intranet/offices/main/'.$value->id.'/')
-	    	 	  ->see($User->Name)
-	    	 	  ->see($value->UID);
-	    }
+	public function TestAllOffice()
+	{
+		$Query = DB::table('GAOffices')->get();
+		foreach ($Query as $value) {
+	    	$Agents = DB::table('GA_SalesPerson')->where('Office', $value->UID)->get();
+	    		foreach ($Agents as $ag) {
+	    	 		$User = DB::table('GA_User')->where('UserID', $ag->$UserID);
+	    	 		$this->visit('/intranet/offices/main/'.$value->id.'/')
+	    	 	  	 	 ->see($User->Name)
+	    	 	  		 ->see($value->UID);
+	    		}
+		}
 	}
-}
 
-/* DEL ALL TESTING DATAS */
 
-/**
- * @dataProvider providerTestDelOffice
- */
+	/* DEL ALL TESTING DATAS */
 
+	/**
+ 	* @dataProvider providerTestDelOffice
+ 	*/
     public function testDelOffice($variableOne)
     {
 
@@ -187,18 +173,18 @@ public function TestAllOffice()
 
 
 
-/**
- * @dataProvider providerTestDELAgents
- */
+	/**
+ 	* @dataProvider providerTestDELAgents
+ 	*/
     public function testDelAgents($variableOne, $variableTwo, $varUser)
     { 
     	DB::table('GA_SalesPerson')->where('UserID', $varUser)->delete();
     }
 
-/**
- * @dataProvider providerTestDelNewUsers
- */
-public function testDelUsers($variableOne)
+	/**
+ 	* @dataProvider providerTestDelNewUsers
+ 	*/
+	public function testDelUsers($variableOne)
     {
     	$Query = DB::table('GA_User')->where('Title','like',$variableOne)->where('status','!=','deleted')->get();
 		foreach ($Query as $value) {
@@ -211,45 +197,45 @@ public function testDelUsers($variableOne)
     }
 
 
-public function providerTestDelOffice () { return $this->providerTestNewOffice(); }
-public function providerTestNewOffice ()
-{
-    return array(
-    	array ('333-444-333'), 
-    	array ('222-333-222'),
-    	array ('555-666-888'),
-    	array ('888-333-454'),
-    	);
-}
+	public function providerTestDelOffice () { return $this->providerTestNewOffice(); }
+	public function providerTestNewOffice ()
+	{
+    	return array(
+    			array ('333-444-333'), 
+    			array ('222-333-222'),
+    			array ('555-666-888'),
+    			array ('888-333-454'),
+    			);
+	}
 
-public function providerTestDELAgents () { return $this->providerTestNewAgents();}
-public function providerTestNewAgents ()
-{
-    return array(
-    	array ('333-444-333', 'cus_8JPC65OiwtqxwS', '8'), 
-    	array ('222-333-222', 'cus_8IryVpEwMklKf6', '113545'),
-    	array ('555-666-888','', '113546'),
-    	array ('888-333-454','','113547'),
-    	);
-}
+	public function providerTestDELAgents () { return $this->providerTestNewAgents();}
+	public function providerTestNewAgents ()
+	{
+    	return array(
+    			array ('333-444-333', 'cus_8JPC65OiwtqxwS', '8'), 
+    			array ('222-333-222', 'cus_8IryVpEwMklKf6', '113545'),
+    			array ('555-666-888','', '113546'),
+    			array ('888-333-454','','113547'),
+    			);
+	}
 
 
 
-/* for USER"S test */
-public function providerTestNewUsers()    { return $this->for_user_test_array(); }
-public function providerTestDelNewUsers() { return $this->for_user_test_array(); }
+	/* for USER"S test */
+	public function providerTestNewUsers()    { return $this->for_user_test_array(); }
+	public function providerTestDelNewUsers() { return $this->for_user_test_array(); }
 
-public function for_user_test_array(){
-		return array(
+	public function for_user_test_array(){
+			return array(
     	 			array ('Title1'), 
     				array ('Title2'),
     				array ('Title3'),
     				array ('Title4'),
-    			);
-}
+    				);
+	}
 
-public function providerTestFoo()
-{
+	public function providerTestFoo()
+	{
 	    return array(
     			    array('All Users', '/intranet/users'),
         			array('Create New User', '/intranet/users/form'),
@@ -259,7 +245,7 @@ public function providerTestFoo()
         			array('Create New Offices', '/intranet/offices/form'),
         			array('Dashboard', '/intranet/dashboard'),      
     	);
-}
+	}
 
 }
 
