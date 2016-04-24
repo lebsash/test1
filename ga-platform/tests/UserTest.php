@@ -82,10 +82,14 @@ class UserTest extends TestCase
 
         $this->action('GET', 'Intranet\AgentsController@charges_get', 'cus_8IryVpEwMklKf6');
         $this->assertResponseOk();
+        
+        $response1 = $this->action('GET', 'UserController@termsAgreementSignature');
+        			 $this->assertResponseOk();
 
         $response1 = $this->action('GET', 'Intranet\AgentsController@charges_get', 'cus_8IryVpEwMklKf6');
         			 $this->assertResponseOk();
         			 $this->assertTrue($response1->getContent());
+
         $response1 = $this->action('GET', 'Intranet\AgentsController@charges_get', '1');
         			 $this->assertResponseOk();
         			 $this->assertEquals(null, $response1); 
